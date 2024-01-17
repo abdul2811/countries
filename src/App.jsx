@@ -36,6 +36,7 @@ const App = () => {
   
   const [country, setCountry] = useState([])
   const [filter, setFilter] = useState('')
+  const [loading, setLoading] = useState(true);
   const [temperatureData, setTemperatureData] = useState(null)
 
   const api_key = import.meta.env.VITE_SOME_KEY
@@ -67,32 +68,37 @@ const App = () => {
   .get(`https://api.openweathermap.org/data/2.5/weather?q=${capital}&appid=${api_key}&units=metric`)
   .then(response => setTemperatureData(response.data.main.temp))
 
-  useEffect(() => {
-    if (filteredCountry.length === 1) {
-      fetchTemperature(filteredCountry[0].capital[0]);
-    }
-  }, [filteredCountry]);
+  // useEffect(() => {
+  //   if (filteredCountry.length === 1) {
+  //     fetchTemperature(filteredCountry[0].capital[0]);
+  //   }
+  // }, [filteredCountry]);
 
   const hook = () => {
     axios
-    .get('https://studies.cs.helsinki.fi/restcountries/api/all')
+    .get('http://localhost:3001/api/countries')
     .then(response => {
       setCountry(response.data)
+      setLoading(false);
       console.log(response.data)
     })
   }
 
   useEffect(hook, [])
 
-  const match = useMatch('/:id')
-  const c = match
-    ? country.find(country => country.cca2 === match.params.id)
-    : null
+  // const match = useMatch('/:id')
+  // const c = match
+  //   ? country.find(country => country.cca2 === match.params.id)
+  //   : null
+
+  if (loading) {
+    return <p style={{ color: 'black' }}>Loading...</p>; // or any loading indicator you prefer
+  }
 
   return (
       <Routes>
         <Route path="/" element={<Home handleFilterChange={handleFilterChange} filter={filter} filteredCountry={filteredCountry} />} />
-        <Route path="/:id" element={<Country country={c} />} />
+        <Route path="/:id" element={<Country />} />
       </Routes>
   )
 }
