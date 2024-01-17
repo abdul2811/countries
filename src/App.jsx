@@ -77,7 +77,7 @@ const App = () => {
 
   const hook = () => {
     axios
-    .get('http://localhost:3001/api/countries')
+    .get('https://countriesback-mqco.onrender.com/api/countries')
     .then(response => {
       setCountry(response.data)
       setLoading(false);

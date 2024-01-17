@@ -11,7 +11,7 @@ const Country = () => {
 
 
   useEffect(() => {
-    axios.get(`http://localhost:3001/api/countries/${id}`)
+    axios.get(`https://countriesback-mqco.onrender.com/api/countries/${id}`)
       .then(response => {
         console.log(response.data)
         setItemData(response.data);
@@ -26,7 +26,7 @@ const Country = () => {
   useEffect(() => {
     // Check if itemData is available before making the weather API call
     if (itemData) {
-      axios.get(`http://localhost:3001/api/weather/${itemData.capital}`)
+      axios.get(`https://countriesback-mqco.onrender.com/api/weather/${itemData.capital}`)
         .then(response => {
           setWeatherData(response.data);
         })
