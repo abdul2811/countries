@@ -38,6 +38,7 @@ const App = () => {
   const [filter, setFilter] = useState('')
   const [loading, setLoading] = useState(true);
   const [temperatureData, setTemperatureData] = useState(null)
+  
 
   const api_key = import.meta.env.VITE_SOME_KEY
 
@@ -80,6 +81,7 @@ const App = () => {
     .then(response => {
       setCountry(response.data)
       setLoading(false);
+      setFilter('')
       console.log(response.data)
     })
   }

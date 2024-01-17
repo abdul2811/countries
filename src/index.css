@@ -61,6 +61,7 @@
     background-color:#172631;
     font-size: 3.5rem;
     color: white;
+    min-height: min(15vh, 75px);
   }
 
   .filter-container {
@@ -91,3 +92,28 @@
     margin-bottom: 16px;
   }
 
+
+  .header.route {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 5rem;
+  }
+
+  .left {
+    flex:1
+  }
+  
+  .center {
+    flex: 1;
+  }
+
+  .right {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .right > * {
+    padding-right: min(32px, 7.5%);
+  }

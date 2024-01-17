@@ -1,14 +1,15 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 
 const Country = () => {
   const { id } = useParams();
   console.log(id)
   const [itemData, setItemData] = useState(null);
   const [loading, setLoading] = useState(true);
-  
-  
+  const [weatherData, setWeatherData] = useState(null);
+
+
   useEffect(() => {
     axios.get(`http://localhost:3001/api/countries/${id}`)
       .then(response => {
@@ -21,6 +22,20 @@ const Country = () => {
         setLoading(false); // Set loading to false in case of an error
       });
   }, [id]);
+
+  useEffect(() => {
+    // Check if itemData is available before making the weather API call
+    if (itemData) {
+      axios.get(`http://localhost:3001/api/weather/${itemData.capital}`)
+        .then(response => {
+          setWeatherData(response.data);
+        })
+        .catch(error => {
+          console.error('Error fetching weather data:', error.message);
+        });
+    }
+  }, [itemData]);
+  
 
   // Check if loading
   if (loading) {
@@ -39,13 +54,27 @@ const Country = () => {
   return (
     <div>
       <div className='header route'>
-        <p>{countryName}</p>
+        <div className="left"></div>
+        <div className="center">{countryName}</div>
+        <div className="right">
+          <Link to="/"><p>Home</p></Link>
+        </div>
       </div>
       <div className='body route'>
         {flagSrc !== 'N/A' && (
           <img className='country-flag route' src={flagSrc} alt={`Flag of ${countryName}`} />
         )}
         <p>{itemData.capital || 'N/A'}</p>
+        {weatherData && weatherData.weather && weatherData.weather[0] && (
+          <>
+            <img
+              src={`http://openweathermap.org/img/wn/${weatherData.weather[0].icon}.png`}
+              alt={weatherData.weather[0].description}
+            />
+            <p>Temperature: {weatherData.main.temp} °C</p>
+            <p>Main Weather: {weatherData.weather[0].main}</p>
+          </>
+        )}
       </div>
     </div>
   );
